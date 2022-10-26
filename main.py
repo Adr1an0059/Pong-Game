@@ -1,6 +1,7 @@
 # Import libraries
 import pygame
 import random as rd
+from pygame import mixer as mx
 
 # initialize pygame
 pygame.init()
@@ -10,6 +11,10 @@ background_color = (11, 19, 64)
 player_color = (255, 255, 255)
 ball_color = (80, 80, 80)
 line_color = (255, 255, 255)
+
+# Background music
+mx.music.load("music.wav")
+mx.music.play(-1)
 
 # Players size
 players_width = 15
@@ -68,6 +73,8 @@ player_2_score_y = 10
 # Win text position
 win_x = 260
 win_y = 220
+win_x_2 = 260
+win_y_2 = 360
 
 # Player 1 score function
 def show_score_1(x, y):
@@ -78,7 +85,12 @@ def show_score_2(x, y):
     score_2 = score_font.render("Player two: " + str (player_2_score), True, (0, 0, 0))
     screen.blit(score_2, (x, y))
 
+# Beta (Play Again)
 
+#def play_again(x, y):
+#    text_again = score_font.render("¿Press Space to play again") + str (player_1_score), True, (0, 0, 0)
+#    screen.blit(text_again, (x, y))
+    
 # Icon
 icon = pygame.image.load("icon.png")
 pygame.display.set_icon(icon)
@@ -133,6 +145,8 @@ while running:
     # Ball boundaries (right or left) and score update
     if ball_x > screen_width:
 
+        lose_sound = mx.Sound("lose.wav")
+        lose_sound.play()
         player_1_score += 1
 
         ball_x = screen_width/2
@@ -140,7 +154,7 @@ while running:
         ball_speed_x *= rd.choice([-1, 1])
 
     elif ball_x < 0:
-
+        lose_sound.play()
         player_2_score += 1
 
         ball_x = screen_width/2
@@ -173,7 +187,7 @@ while running:
     ball = pygame.draw.circle(screen, ball_color,(ball_x, ball_y), ball_radius)
 
     # Player win
-    if player_1_score >= 10:
+    if player_1_score >= 5:
         player_1_y_speed = 0
         player_2_y_speed = 0
         ball_y = 2000
@@ -182,8 +196,9 @@ while running:
         player_y = 0
         win_text = win_font.render("PLAYER 1 WIN", True, (17, 7, 131))
         screen.blit(win_text, (win_x, win_y))
+
     
-    elif player_2_score >= 10:
+    elif player_2_score >= 5:
         player_1_y_speed = 0
         player_2_y_speed = 0
         ball_y = 2000
@@ -191,7 +206,7 @@ while running:
         ball_speed_y = 0
         player_y = 0
         win_text = win_font.render("PLAYER 2 WIN", True, (17, 7, 131))
-        screen.blit(win_text, (win_x, win_y))
+        screen.blit(win_text, (win_x_2, win_y_2))
 
     # Drawing area
 
@@ -204,12 +219,15 @@ while running:
     # Colitions
     if ball.colliderect(player_1) or ball.colliderect(player_2):
         ball_speed_x *= -1
+        ball_sound = mx.Sound("smash.wav")
+        ball_sound.play()
 
     # Call the show score_1 function
     show_score_1(player_1_score_x, player_1_score_y)
 
     # Call the show score_2 function
     show_score_2(player_2_score_x, player_2_score_y)
+
 
     # Update the window
     pygame.display.flip()
