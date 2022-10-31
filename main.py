@@ -15,6 +15,7 @@ line_color = (255, 255, 255)
 # Background music
 mx.music.load("music.wav")
 mx.music.play(-1)
+mx.music.set_volume(0.7)   # (0.1 to 1.0)
 
 # Players size
 players_width = 15
@@ -61,6 +62,8 @@ score_font = pygame.font.Font("Font.ttf", 32)
 # Win font
 win_font = pygame.font.Font("Font.ttf", 64)
 
+# Play again Font
+play_font = pygame.font.Font("Font.ttf", 48)
 
 # Score position in the screen (player 1)
 player_1_score_x = 10
@@ -76,6 +79,10 @@ win_y = 220
 win_x_2 = 260
 win_y_2 = 360
 
+# Play text position
+play_x = 180
+play_y = 300
+
 # Player 1 score function
 def show_score_1(x, y):
     score_1 = score_font.render("Player one: " + str (player_1_score), True, (0, 0, 0))
@@ -84,12 +91,6 @@ def show_score_1(x, y):
 def show_score_2(x, y):
     score_2 = score_font.render("Player two: " + str (player_2_score), True, (0, 0, 0))
     screen.blit(score_2, (x, y))
-
-# Beta (Play Again)
-
-#def play_again(x, y):
-#    text_again = score_font.render("¿Press Space to play again") + str (player_1_score), True, (0, 0, 0)
-#    screen.blit(text_again, (x, y))
     
 # Icon
 icon = pygame.image.load("icon.png")
@@ -107,6 +108,8 @@ while running:
         # Checks for KEYDOWN event
         if event.type == pygame.KEYDOWN:
             
+            # Play again
+
             # Player 1
             if event.key == pygame.K_w:
                 player_1_y_speed = -0.9
@@ -195,9 +198,10 @@ while running:
         ball_speed_y = 0
         player_y = 0
         win_text = win_font.render("PLAYER 1 WIN", True, (17, 7, 131))
+        play_text = play_font.render("Press SPACE to play again", True, (17,7,11))
         screen.blit(win_text, (win_x, win_y))
+        screen.blit(play_text, (play_x, play_y))
 
-    
     elif player_2_score >= 5:
         player_1_y_speed = 0
         player_2_y_speed = 0
@@ -207,6 +211,7 @@ while running:
         player_y = 0
         win_text = win_font.render("PLAYER 2 WIN", True, (17, 7, 131))
         screen.blit(win_text, (win_x_2, win_y_2))
+        screen.blit(play_text, (play_x, play_y))
 
     # Drawing area
 
@@ -227,7 +232,6 @@ while running:
 
     # Call the show score_2 function
     show_score_2(player_2_score_x, player_2_score_y)
-
 
     # Update the window
     pygame.display.flip()
