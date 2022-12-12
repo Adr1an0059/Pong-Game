@@ -198,7 +198,7 @@ while running:
         ball_speed_y = 0
         player_y = 0
         win_text = win_font.render("PLAYER 1 WIN", True, (17, 7, 131))
-        play_text = play_font.render("Press SPACE to play again", True, (17,7,11))
+        play_text = play_font.render("Press SPACE to play again", True, (17, 7, 11))
         screen.blit(win_text, (win_x, win_y))
         screen.blit(play_text, (play_x, play_y))
 
